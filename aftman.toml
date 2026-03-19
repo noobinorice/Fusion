@@ -3,6 +3,6 @@
 
 # To add a new tool, add an entry to this table.
 [tools]
-rojo = "rojo-rbx/rojo@7.4.1"
+rojo = "rojo-rbx/rojo@7.7.0-rc.1"
 selene = "Kampfkarren/selene@0.26.1"
 luau-lsp = "JohnnyMorganz/luau-lsp@1.57.1"

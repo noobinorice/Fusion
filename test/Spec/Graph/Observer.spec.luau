@@ -16,7 +16,7 @@ return function()
 
 	it("constructs in scopes", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local dependency = Value(scope, 5)
 		local observer = Observer(scope, dependency)
@@ -30,7 +30,7 @@ return function()
 
 	it("is destroyable", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local dependency = Value(scope, 5)
 		local observer = Observer(scope, dependency)
@@ -41,7 +41,7 @@ return function()
 
 	it("fires once after change", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local dependency = Value(scope, 5)
 		local observer = Observer(scope, dependency)
@@ -59,14 +59,14 @@ return function()
 
 	it("fires asynchronously", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local dependency = Value(scope, 5)
 		local observer = Observer(scope, dependency)
 
-		local firesPerThread = {} :: {[thread]: number}
+		local firesPerThread = {} :: { [thread]: number }
 
-		for i=1, 5 do
+		for i = 1, 5 do
 			observer:onChange(function()
 				local thread = coroutine.running()
 				firesPerThread[thread] = (firesPerThread[thread] or 0) + 1
@@ -83,7 +83,7 @@ return function()
 
 	it("fires onBind at bind time", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local dependency = Value(scope, 5)
 		local observer = Observer(scope, dependency)
@@ -100,7 +100,7 @@ return function()
 
 	it("disconnects manually", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local dependency = Value(scope, 5)
 		local observer = Observer(scope, dependency)
@@ -119,10 +119,10 @@ return function()
 
 	it("disconnects on destroy", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local dependency = Value(scope, 5)
-		
+
 		local subScope = innerScope(scope)
 		local observer = Observer(subScope, dependency)
 
@@ -141,7 +141,7 @@ return function()
 
 	it("never fires onChange for constants", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local observer = Observer(scope, 5)
 		local numFires = 0
@@ -155,7 +155,7 @@ return function()
 
 	it("fires onBind at bind time for constants", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local observer = Observer(scope, 5)
 		local numFires = 0
@@ -171,7 +171,7 @@ return function()
 
 	it("ensures dependencies are captured for unobserved lazy inputs", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local value = Value(scope, 5)
 		local double = Computed(scope, function(use)
@@ -193,7 +193,7 @@ return function()
 
 	it("correctly preserves its dependency across multiple evaluations", function()
 		local expect = getfenv().expect
-		
+
 		local scope = {}
 		local value = Value(scope, 5)
 		local numFires = 0

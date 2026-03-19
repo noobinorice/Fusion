@@ -12,21 +12,19 @@ local Types = require(Package.Types)
 local ExternalDebug = require(Package.ExternalDebug)
 local deriveScopeImpl = require(Package.Memory.deriveScopeImpl)
 
-local function innerScope<T>(
-	existing: Types.Scope<T>,
-	...: {[unknown]: unknown}
-): any
-	local new = deriveScopeImpl(existing, ...)
+local function innerScope<T>(existing: Types.Scope<T>, ...: { [unknown]: unknown }): any
+	local new = deriveScopeImpl(existing, {
+		_getParent = function()
+			return existing
+		end,
+	}, ...)
 	table.insert(existing, new)
-	table.insert(
-		new, 
-		function()
-			local index = table.find(existing, new)
-			if index ~= nil then
-				table.remove(existing, index)
-			end
+	table.insert(new, function()
+		local index = table.find(existing, new)
+		if index ~= nil then
+			table.remove(existing, index)
 		end
-	)
+	end)
 	ExternalDebug.trackScope(new)
 	return new
 end

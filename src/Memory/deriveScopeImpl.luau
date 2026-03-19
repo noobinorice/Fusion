@@ -18,21 +18,13 @@ local merge = require(Package.Utility.merge)
 -- checking behaviour.
 local function deriveScopeImpl<T>(
 	existing: Types.Scope<T>,
-	methods: {[unknown]: unknown}?,
-	...: {[unknown]: unknown}
+	methods: { [unknown]: unknown }?,
+	...: { [unknown]: unknown }
 ): any
 	local metatable = getmetatable(existing)
 	if methods ~= nil then
-		metatable = table.clone(metatable)
-		metatable.__index = merge(
-			true, {}, 
-			metatable.__index, 
-			merge(
-				false, {},
-				methods, 
-				...
-			)
-		)
+		metatable = table.clone(metatable or {})
+		metatable.__index = merge(true, {}, metatable.__index, merge(false, {}, methods, ...))
 	end
 	return setmetatable({}, metatable)
 end
